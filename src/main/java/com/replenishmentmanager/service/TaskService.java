@@ -57,5 +57,14 @@ public class TaskService {
 		return tasks;
 	}
 	
+	public List<Task> getTasksAssigned(String name){
+		User user = userRepo.findByfName(name);
+		String id = user.getUserId();
+		List<Task> tasks = taskRepo.findByassigneeID(id);
+		return tasks;
+	}
+	
+	
+	
 	
 }
