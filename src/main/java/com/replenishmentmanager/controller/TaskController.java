@@ -104,6 +104,18 @@ public class TaskController {
 		return task;
 	}
 	
+	@RequestMapping(value = "/deletetask/{id}/" , method = RequestMethod.DELETE)
+	@ResponseBody
+	public String deleteTask(@PathVariable(value="id") String id){
+		if(taskRepo.existsById(id)){
+		taskRepo.deleteById(id);
+		return "successfully deleted the task";	
+		}
+		else{
+			return "task not found";
+		}
+				
+	}
 	
 
 	

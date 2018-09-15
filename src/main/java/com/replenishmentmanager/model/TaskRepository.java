@@ -13,6 +13,7 @@ public interface TaskRepository extends MongoRepository<Task, String> {
 	public List<Task> findBytaskOwnerID(String id);
 	public List<Task> findByassigneeID(String id);
 	public List<Task> findAllBystatus(String status);
+	public void deleteById(String id);
 	
 
 }
