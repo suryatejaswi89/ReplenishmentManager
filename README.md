@@ -5,11 +5,14 @@ Selecting a Database and designing the schema:
 
 2. Collections have been defined and set of test data has been created.
 
-3.. Requirement Analysis is done and the following scenarios or use cases have been identified.
-⋅⋅* Create a new task.
+3. Requirement Analysis is done and the following scenarios or use cases have been identified.
+  * Scenarios
+1. Create a new task.
+
 		```
 		db.tasks.insert({description: 'Order the plastic cups', taskOwner: 'Teja', priority: 'high', estimate: '3 days', Assignee: 'tiru', status: 'to-do', })
 		```
+		
 ⋅⋅* List all the tasks  from the table.
 	```
 	db.tasks.find()

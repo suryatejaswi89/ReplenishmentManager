@@ -64,6 +64,15 @@ public class TaskService {
 		return tasks;
 	}
 	
+	public Task updateStatus(String id, String status){
+		Task task = null;
+		Optional<Task> taskwrapper = taskRepo.findById(id);
+		task = taskwrapper.get();
+		task.setStatus(status);
+		taskRepo.save(task);
+		return task;
+	}
+	
 	
 	
 	

@@ -88,6 +88,22 @@ public class TaskController {
 		return tasks;
 	}
 	
+	@RequestMapping(value = "/updateStatus/{id}/{status}/", method = RequestMethod.PUT)
+	@ResponseBody
+	public Task updateStatus(@PathVariable(value = "id") String id, @PathVariable(value = "status") String status) {
+		Task task = null;
+		Optional<Task> taskWrapper = taskRepo.findById(id);
+		if(taskWrapper.isPresent()){
+			task = taskWrapper.get();
+			task.setStatus(status);
+			taskRepo.save(task);
+		}else {
+			//log error that task is null
+		}
+		
+		return task;
+	}
+	
 	
 
 	

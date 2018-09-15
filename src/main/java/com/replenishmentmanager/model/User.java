@@ -2,6 +2,7 @@ package com.replenishmentmanager.model;
 
 import org.springframework.data.annotation.Id;
 
+
 public class User {
 	
 	@Id
