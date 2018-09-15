@@ -11,12 +11,17 @@ import org.springframework.stereotype.Service;
 
 import com.replenishmentmanager.model.Task;
 import com.replenishmentmanager.model.TaskRepository;
+import com.replenishmentmanager.model.User;
+import com.replenishmentmanager.model.UserRepository;
 
 @Service
 public class TaskService {
 
 	@Autowired
 	private TaskRepository taskRepo;
+	
+	@Autowired
+	private UserRepository userRepo;
 	
 	public Task createTask(String description,String taskOwnerID,String assigneeID,Date dateCreated,String status,int estimate){
 		Task task = new Task();
@@ -42,6 +47,13 @@ public class TaskService {
 	
 	public List<Task> getAllTasks(){
 		List<Task> tasks = taskRepo.findAll();
+		return tasks;
+	}
+	
+	public List<Task> getTasksbyCreator(String name){
+		User user = userRepo.findByfName(name);
+		String id = user.getUserId();
+		List<Task> tasks = taskRepo.findBytaskOwnerID(id);
 		return tasks;
 	}
 	

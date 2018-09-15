@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.replenishmentmanager.model.Task;
 import com.replenishmentmanager.model.TaskRepository;
+import com.replenishmentmanager.model.User;
+import com.replenishmentmanager.model.UserRepository;
 import com.replenishmentmanager.service.TaskService;
 
 
@@ -26,6 +28,9 @@ public class TaskController {
 	
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private UserRepository userRepo;
 	
 	
 	@RequestMapping(value = "/task", method = RequestMethod.POST)
@@ -62,6 +67,27 @@ public class TaskController {
 		return tasks;
 		
 	}
+	
+	@RequestMapping(value =  "/createdByUser/{name}/", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Task> getAllTasksbyUser(@PathVariable(value = "name") String name){
+		 
+		User user = userRepo.findByfName(name);
+		String id = user.getUserId();
+		List<Task> tasks = taskRepo.findBytaskOwnerID(id);
+		return tasks;
+	}
+	
+	@RequestMapping(value =  "/assignedToUser/{name}/", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Task> getTasksAssigned(@PathVariable(value = "name") String name){
+		 
+		User user = userRepo.findByfName(name);
+		String id = user.getUserId();
+		List<Task> tasks = taskRepo.findByassigneeID(id);
+		return tasks;
+	}
+	
 	
 	
 	
