@@ -3,8 +3,10 @@ package com.replenishmentmanager.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.replenishmentmanager.model.Task;
@@ -32,5 +34,14 @@ public class TaskService {
 		 List<Task> tasks = taskRepo.findAllBystatus(status);
 		return tasks;
 	}
+
+	public Optional<Task> getTaskbyID(String id){
+		Optional<Task> task = taskRepo.findById(id);
+		return task;
+	}
 	
+	public List<Task> getAllTasks(){
+		List<Task> tasks = taskRepo.findAll();
+		return tasks;
+	}
 }

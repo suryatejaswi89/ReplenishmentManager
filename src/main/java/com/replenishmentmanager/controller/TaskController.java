@@ -2,7 +2,9 @@ package com.replenishmentmanager.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,6 @@ public class TaskController {
 		Date dateCreated = task.getDateCreated();
 		String status = task.getStatus();
 		int estimate = task.getEstimate();
-		
 		return taskService.createTask(description, taskOwner, assignee,dateCreated,status,estimate);
 	}
 	
@@ -45,6 +46,25 @@ public class TaskController {
 		List<Task> tasks = taskRepo.findAllBystatus(status);
 		return tasks;
 	}
+	
+	@RequestMapping(value="/tasks/{_id}/", method = RequestMethod.GET)
+	@ResponseBody
+	public Optional<Task> getTasksbyID(@PathVariable(value = "_id") String id){
+		Optional<Task> task = taskRepo.findById(id);
+		return task;
+	}
+	
+	
+	@RequestMapping(value="/tasks/", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Task> getAllTasks(){
+		List<Task> tasks = taskRepo.findAll();
+		return tasks;
+		
+	}
+	
+	
+	
 	
 	
 
