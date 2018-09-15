@@ -15,12 +15,38 @@ public class User {
 	 * @param lName
 	 * @param designation
 	 */
-	public User(String userId, String fName, String lName, String designation) {
-		super();
+	public User(String userId,String fName, String lName, String designation) {
 		this.userId = userId;
 		this.fName = fName;
 		this.lName = lName;
 		this.designation = designation;
+	}
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
+	}
+	/**
+	 * @return the fName
+	 */
+	public String getfName() {
+		return fName;
+	}
+	/**
+	 * @return the lName
+	 */
+	public String getlName() {
+		return lName;
+	}
+	/**
+	 * @return the designation
+	 */
+	public String getDesignation() {
+		return designation;
+	}
+	public User() {
+		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * @param userId the userId to set
