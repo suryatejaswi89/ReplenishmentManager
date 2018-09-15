@@ -1,6 +1,8 @@
 package com.replenishmentmanager.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,11 @@ public class TaskService {
 		task.setEstimate(estimate);
 		taskRepo.save(task);
 		return task;
+	}
+	
+	public List<Task> getTaskbystatus(String status){
+		 List<Task> tasks = taskRepo.findAllBystatus(status);
+		return tasks;
 	}
 	
 }
