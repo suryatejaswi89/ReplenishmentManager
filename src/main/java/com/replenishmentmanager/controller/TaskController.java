@@ -121,9 +121,19 @@ public class TaskController {
 	
 	@RequestMapping(value="/tasks/", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Task> getAllTasks(){
-		List<Task> tasks = taskRepo.findAll();
-		return tasks;
+	public ResponseEntity<List<Task>> getAllTasks(){
+		List<Task> tasks = null;
+		try{
+		 tasks = taskRepo.findAll();
+		 logger.info("All tasks have been listed", tasks);
+		logger.debug("All tasks have been listed",tasks.toString());
+		 return new ResponseEntity<List<Task>>(tasks,HttpStatus.OK);
+		 
+		}
+		catch(Exception e){
+			logger.error("Listing tasks has failed due to an error",e.getMessage());
+		}
+		return new ResponseEntity<List<Task>>(tasks,HttpStatus.BAD_REQUEST);
 		
 	}
 	
