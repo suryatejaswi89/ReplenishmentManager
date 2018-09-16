@@ -164,7 +164,7 @@ public class TaskController {
 		String id = user.getUserId();
 		tasks = taskRepo.findByassigneeID(id);
 		logger.info("All tasks assigned to user with given id have been listed", id,tasks);
-		logger.debug("All tasks assigned to the this user have been listed",id, tasks.toString());
+		logger.debug("All tasks assigned to the have been listed",id, tasks.toString());
 		return new ResponseEntity<List<Task>>(tasks,HttpStatus.OK);
 		}
 		catch(Exception e){
@@ -175,41 +175,57 @@ public class TaskController {
 	
 	@RequestMapping(value = "/updateStatus/{id}/{status}/", method = RequestMethod.PUT)
 	@ResponseBody
-	public Task updateStatus(@PathVariable(value = "id") String id, @PathVariable(value = "status") String status) throws CloneNotSupportedException {
+	public ResponseEntity<Task> updateStatus(@PathVariable(value = "id") String id, @PathVariable(value = "status") String status) throws CloneNotSupportedException {
 		Task task = null;
+		try{
 		Optional<Task> taskWrapper = taskRepo.findById(id);
+
 		if (taskWrapper.isPresent()) {
 			task = taskWrapper.get();
+			logger.info("Task has been found using id", task);
 			task.setStatus(status.toUpperCase());
+			logger.debug("Status for the task has been updated",task.toString());
 			if (status.equalsIgnoreCase(StatusEnum.STARTED.toString())) {
 				LocalDate date = LocalDate.now();
 				task.setDateStarted(date);
+				logger.info("Time stamp when the task is moved to STARTED status has been captured", task.getDateStarted() );;
 				Period period = Period.between(task.getDateCreated(), date);
 				task.setTimeinCreatedstatus(period.getDays());
+				logger.info("Tracked time the task has spent in CREATED status", task.getTimeinCreatedstatus());
 			} else if (status.equalsIgnoreCase(StatusEnum.COMPLETED.toString())) {
 				LocalDate date = LocalDate.now();
 				task.setDateCompleted(date);
+				logger.info("Time stamp when the task is moved to COMPLETED status has been captured", task.getDateCompleted());
 				Period period = Period.between(task.getDateStarted(), date);
 				task.setTimeInDateStartedstatus(period.getDays());
+				logger.info("Tracked time the task has spent in CREATED status", task.getTimeInDateStartedstatus());
 				if(task.isRecurringTask()){
 					//calculate startdatefor the next recurring task
+					logger.info("Task has been identified as a recurring task", task.isRecurringTask());
 					LocalDate currentTaskCreationDate = task.getDateCreated();
-					System.out.println(task.getDateCreated().toString());
 					LocalDate newStartDate = currentTaskCreationDate.plusDays(task.getFrequency());
-					System.out.println(task.getDateCreated().toString());
+					logger.info("Setting the dateCreated for the new task");
 					Task nextRecurringTask = (Task) task.clone();
+					logger.info("new task has been cloned from the old task");
 					nextRecurringTask.setDateCreated(newStartDate);
+					nextRecurringTask.setDateStarted(null);
+					nextRecurringTask.setDateCompleted(null);
 					nextRecurringTask.setStatus(StatusEnum.CREATED.toString());
 					nextRecurringTask.setTaskID(null); // mongo will create and assign new id 
-					taskRepo.save(nextRecurringTask);
+					taskRepo.save(nextRecurringTask); //this can cause an exception
+					logger.info("Saved the newly created recurring task to DB",nextRecurringTask.toString());
 				}
 			}
-			taskRepo.save(task);
+			taskRepo.save(task); //this can cause an excetion
 		} else {
 			// log error that task is null
 		}
+		return new ResponseEntity<Task>(task,HttpStatus.OK);
+		}catch(Exception e){
+			
+		}
 
-		return task;
+		return new ResponseEntity<Task>(task,HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(value = "/deletetask/{id}/" , method = RequestMethod.DELETE)
