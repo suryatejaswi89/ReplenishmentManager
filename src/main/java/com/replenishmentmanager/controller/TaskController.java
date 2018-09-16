@@ -139,7 +139,7 @@ public class TaskController {
 	
 	@RequestMapping(value =  "/createdByUser/{name}/", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<Task>> getAllTasksbyUser(@PathVariable(value = "name") String name){
+	public ResponseEntity<List<Task>> getAllTaskscreatedByUser(@PathVariable(value = "name") String name){
 		List<Task> tasks = null;
 		try{
 		User user = userRepo.findByfName(name);
