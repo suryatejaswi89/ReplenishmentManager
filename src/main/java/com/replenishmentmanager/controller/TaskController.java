@@ -157,12 +157,20 @@ public class TaskController {
 	
 	@RequestMapping(value =  "/assignedToUser/{name}/", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Task> getTasksAssigned(@PathVariable(value = "name") String name){
-		 
+	public ResponseEntity<List<Task>> getTasksAssigned(@PathVariable(value = "name") String name){
+		List<Task> tasks = null;
+		try{
 		User user = userRepo.findByfName(name);
 		String id = user.getUserId();
-		List<Task> tasks = taskRepo.findByassigneeID(id);
-		return tasks;
+		tasks = taskRepo.findByassigneeID(id);
+		logger.info("All tasks assigned to user with given id have been listed", id,tasks);
+		logger.debug("All tasks assigned to the this user have been listed",id, tasks.toString());
+		return new ResponseEntity<List<Task>>(tasks,HttpStatus.OK);
+		}
+		catch(Exception e){
+			logger.error("Listing tasks by AssigneeID have failed",e.getMessage());
+		}
+		return new ResponseEntity<List<Task>>(tasks,HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(value = "/updateStatus/{id}/{status}/", method = RequestMethod.PUT)
