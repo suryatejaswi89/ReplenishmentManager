@@ -1,15 +1,14 @@
 package com.replenishmentmanager.controller;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -103,20 +102,26 @@ public class TaskController {
 	@ResponseBody
 	public Task updateStatus(@PathVariable(value = "id") String id, @PathVariable(value = "status") String status) {
 		Task task = null;
-		Date date = new Date();
 		Optional<Task> taskWrapper = taskRepo.findById(id);
-		if(taskWrapper.isPresent()){
+		if (taskWrapper.isPresent()) {
 			task = taskWrapper.get();
 			task.setStatus(status);
-			if(status.equalsIgnoreCase("started"))
+			if (status.equalsIgnoreCase("started")) {
+				LocalDate date = LocalDate.now();
 				task.setInProgress(date);
-			else if(status.equalsIgnoreCase("completed"))
+				Period period = Period.between(task.dateCreated, date);
+				task.setTimeinCreatedstatus(period.getDays());
+			} else if (status.equalsIgnoreCase("completed")) {
+				LocalDate date = LocalDate.now();
 				task.setDateCompleted(date);
+				Period period = Period.between(task.dateCreated, date);
+				task.setTimeininProgressstatus(period.getDays());
+			}
 			taskRepo.save(task);
-		}else {
-			//log error that task is null
+		} else {
+			// log error that task is null
 		}
-		
+
 		return task;
 	}
 	

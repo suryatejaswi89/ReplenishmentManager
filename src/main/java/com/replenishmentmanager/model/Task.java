@@ -1,5 +1,6 @@
 package com.replenishmentmanager.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -26,21 +27,21 @@ public class Task {
 		this.weightage = weightage;
 	}
 	/**
-	 * @param dateCompleted the dateCompleted to set
+	 * @param date the dateCompleted to set
 	 */
-	public void setDateCompleted(Date dateCompleted) {
-		this.dateCompleted = dateCompleted;
+	public void setDateCompleted(LocalDate date) {
+		this.dateCompleted = date;
 	}
 	/**
-	 * @param inProgress the inProgress to set
+	 * @param date the inProgress to set
 	 */
-	public void setInProgress(Date inProgress) {
-		this.inProgress = inProgress;
+	public void setInProgress(LocalDate date) {
+		this.inProgress = date;
 	}
 	public String description;
 	public String taskOwnerID;
 	public String assigneeID;
-	public Date dateCreated;
+	public LocalDate dateCreated;
 	public String status;
 	public int priority;
 	/*
@@ -48,10 +49,36 @@ public class Task {
 	 */
 	public int estimate;
 	public double weightage;
-	public Date dateCompleted;
-	public Date inProgress;
+	public LocalDate dateCompleted;
+	public LocalDate inProgress;
+	private int timeinCreatedstatus;
+	private int timeininProgressstatus;
 	
 	
+	/**
+	 * @return the timeinCreatedstatus
+	 */
+	public int getTimeinCreatedstatus() {
+		return timeinCreatedstatus;
+	}
+	/**
+	 * @param timeinCreatedstatus the timeinCreatedstatus to set
+	 */
+	public void setTimeinCreatedstatus(int timeinCreatedstatus) {
+		this.timeinCreatedstatus = timeinCreatedstatus;
+	}
+	/**
+	 * @return the timeininProgressstatus
+	 */
+	public int getTimeininProgressstatus() {
+		return timeininProgressstatus;
+	}
+	/**
+	 * @param timeininProgressstatus the timeininProgressstatus to set
+	 */
+	public void setTimeininProgressstatus(int timeininProgressstatus) {
+		this.timeininProgressstatus = timeininProgressstatus;
+	}
 	/**constructor
 	 * @param taskID
 	 * @param description
@@ -61,7 +88,7 @@ public class Task {
 	 * @param status
 	 * @param estimate
 	 */
-	public Task(String taskID, String description, String taskOwnerID, String assigneeID, Date dateCreated,
+	public Task(String taskID, String description, String taskOwnerID, String assigneeID, LocalDate dateCreated,
 			String status,int priority, int estimate, double weightage) {
 		super();
 		this.taskID = taskID;
@@ -119,7 +146,7 @@ public class Task {
 	/**
 	 * @return the dateCreated
 	 */
-	public Date getDateCreated() {
+	public LocalDate getDateCreated() {
 		return dateCreated;
 	}
 	/**
@@ -137,13 +164,13 @@ public class Task {
 	/**
 	 * @return the dateCompleted
 	 */
-	public Date getDateCompleted() {
+	public LocalDate getDateCompleted() {
 		return dateCompleted;
 	}
 	/**
 	 * @return the inProgress
 	 */
-	public Date getInProgress() {
+	public LocalDate getInProgress() {
 		return inProgress;
 	}
 	/**
@@ -173,7 +200,7 @@ public class Task {
 	/**
 	 * @param dateCreated the dateCreated to set
 	 */
-	public void setDateCreated(Date dateCreated) {
+	public void setDateCreated(LocalDate dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 	/**
