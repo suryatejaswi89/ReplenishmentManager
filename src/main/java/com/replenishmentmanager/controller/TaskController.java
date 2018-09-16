@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +27,6 @@ import com.replenishmentmanager.model.User;
 import com.replenishmentmanager.model.UserRepository;
 import com.replenishmentmanager.service.TaskService;
 
-
 @Controller
 public class TaskController {
 	@Autowired
@@ -35,43 +38,84 @@ public class TaskController {
 	@Autowired
 	private UserRepository userRepo;
 	
+	final static Logger logger = LogManager.getLogger();
 	
 	@RequestMapping(value = "/task", method = RequestMethod.POST)
 	@ResponseBody
-	public Task createTask(@RequestBody Task task) {
-		task.setStatus(StatusEnum.CREATED.toString());
-		task.setWeightage(task.getPriority()*1000/task.getEstimate());
-		return taskService.saveTask(task);
+	public ResponseEntity<Task> createTask(@RequestBody Task task) {
+
+		Task persistedTask = null;
+		try{
+			task.setStatus(StatusEnum.CREATED.toString());
+			task.setWeightage(task.getPriority()*1000/task.getEstimate());
+			persistedTask = taskService.saveTask(task);
+			logger.info("Task with id {} got created successfully", persistedTask.getTaskID());
+			logger.debug("Persisted task with id {} and with details {}", persistedTask.getTaskID(), persistedTask.toString());
+			return new ResponseEntity<Task>(persistedTask, HttpStatus.OK);
+		}catch(Exception e){
+			logger.error("Task creation failed with the exception: {}", e.getMessage());
+			return new ResponseEntity<Task>(persistedTask,HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@RequestMapping(value="/{status}/", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Task> getTasksbystatus(@PathVariable(value = "status") String status){
-		List<Task> tasks = taskRepo.findAllBystatus(status);
-		return tasks;
+	public ResponseEntity<List<Task>> getTasksbystatus(@PathVariable(value = "status") String status){
+		List<Task> tasks = null;
+		try{
+		tasks = taskRepo.findAllBystatus(status);
+		logger.info("Tasks with given status have been found succesfully", tasks);
+		logger.debug("tasks with given status {}",tasks.toString());
+		return new ResponseEntity<List<Task>>(tasks, HttpStatus.OK);
+		//logger.info(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+		}
+		catch(Exception e){
+			
+			logger.error("fething the task with given task has failed", e.getMessage());
+			
+		}
+		return new ResponseEntity<List<Task>>(tasks, HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(value = "/pendingtasks/", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Task> pendingTasks(){
+	public ResponseEntity<List<Task>> pendingTasks(){
 		
 		List<Task> pendingTasks = new ArrayList<Task>();
+		
+		try{
 		pendingTasks.addAll(taskRepo.findAllBystatus(StatusEnum.CREATED.toString()));
 		pendingTasks.addAll(taskRepo.findAllBystatus(StatusEnum.STARTED.toString()));
 	
 		List<Task> sortedTasks = pendingTasks.stream()
 				.sorted(Comparator.comparingDouble(Task::getWeightage).reversed())
 				.collect(Collectors.toList());
+		logger.info("Pending tasks have been listed successfully",sortedTasks);
+		logger.debug("Pending tasks have been listed successfully",sortedTasks.toString());
+		return new ResponseEntity<List<Task>>(sortedTasks, HttpStatus.OK);
+		}
+		catch(Exception e){
+			logger.error("feching the pending tasks has failed", e.getMessage());	
+		}
 		
-		return sortedTasks;
+		return new ResponseEntity<List<Task>>(pendingTasks, HttpStatus.BAD_REQUEST);
 		
 	}
 	
 	@RequestMapping(value="/tasks/{id}/", method = RequestMethod.GET)
 	@ResponseBody
-	public Optional<Task> getTasksbyID(@PathVariable(value = "id") String id){
-		Optional<Task> task = taskRepo.findById(id);
-		return task;
+	public ResponseEntity<Optional<Task>> getTasksbyID(@PathVariable(value = "id") String id){
+		Optional<Task> task = null;
+		try{
+		task = taskRepo.findById(id);
+		logger.info("Task with given id has been found", task);
+		logger.debug("Task with given id has been found",task.toString());
+		return new ResponseEntity<Optional<Task>>(task,HttpStatus.OK);
+	}
+	catch(Exception e){
+		logger.error("Task fetching by Id has failed", e.getMessage());
+	}
+		return new ResponseEntity<Optional<Task>>(task, HttpStatus.BAD_REQUEST);
 	}
 	
 	
