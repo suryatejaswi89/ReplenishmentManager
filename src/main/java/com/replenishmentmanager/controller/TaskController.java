@@ -3,7 +3,6 @@ package com.replenishmentmanager.controller;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,7 +99,7 @@ public class TaskController {
 	
 	@RequestMapping(value = "/updateStatus/{id}/{status}/", method = RequestMethod.PUT)
 	@ResponseBody
-	public Task updateStatus(@PathVariable(value = "id") String id, @PathVariable(value = "status") String status) {
+	public Task updateStatus(@PathVariable(value = "id") String id, @PathVariable(value = "status") String status) throws CloneNotSupportedException {
 		Task task = null;
 		Optional<Task> taskWrapper = taskRepo.findById(id);
 		if (taskWrapper.isPresent()) {
@@ -108,14 +107,26 @@ public class TaskController {
 			task.setStatus(status);
 			if (status.equalsIgnoreCase("started")) {
 				LocalDate date = LocalDate.now();
-				task.setInProgress(date);
-				Period period = Period.between(task.dateCreated, date);
+				task.setDateStarted(date);
+				Period period = Period.between(task.getDateCreated(), date);
 				task.setTimeinCreatedstatus(period.getDays());
 			} else if (status.equalsIgnoreCase("completed")) {
 				LocalDate date = LocalDate.now();
 				task.setDateCompleted(date);
-				Period period = Period.between(task.dateCreated, date);
-				task.setTimeininProgressstatus(period.getDays());
+				Period period = Period.between(task.getDateStarted(), date);
+				task.setTimeInDateStartedstatus(period.getDays());
+				if(task.isRecurringTask()){
+					//calculate startdatefor the next recurring task
+					LocalDate currentTaskCreationDate = task.getDateCreated();
+					System.out.println(task.getDateCreated().toString());
+					LocalDate newStartDate = currentTaskCreationDate.plusDays(task.getFrequency());
+					System.out.println(task.getDateCreated().toString());
+					Task nextRecurringTask = (Task) task.clone();
+					nextRecurringTask.setDateCreated(newStartDate);
+					nextRecurringTask.setStatus("created");
+					nextRecurringTask.setTaskID(null); // mongo will create and assign new id 
+					taskRepo.save(nextRecurringTask);
+				}
 			}
 			taskRepo.save(task);
 		} else {

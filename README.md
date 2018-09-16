@@ -1,7 +1,7 @@
 # ReplenishmentManager
 
 Selecting a Database and designing the schema:
-1. Keeping in mind scalability and also the nature of the data, noSQL will be the best option for managing the data.This project is being built with MongoDB as its noSQL database.
+1. Considering scalability and also the nature of the data, noSQL will be the best option for managing the data.This project is being built with MongoDB as its noSQL database.
 
 2. Collections have been defined and set of test data has been created.
 
