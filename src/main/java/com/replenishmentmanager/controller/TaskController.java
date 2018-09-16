@@ -230,14 +230,23 @@ public class TaskController {
 	
 	@RequestMapping(value = "/deletetask/{id}/" , method = RequestMethod.DELETE)
 	@ResponseBody
-	public String deleteTask(@PathVariable(value="id") String id){
+	public ResponseEntity<String> deleteTask(@PathVariable(value="id") String id){
+		
+		try{
 		if(taskRepo.existsById(id)){
 		taskRepo.deleteById(id);
-		return "successfully deleted the task";	
+		logger.info("Task found in the repo", id);
+		logger.debug("Task with the given id has been deleted", id);
+		return new ResponseEntity<String>("Task deleted successfully",HttpStatus.OK);
 		}
 		else{
-			return "task not found";
+		return new ResponseEntity<String>("task not found",HttpStatus.OK);
 		}
+		}
+		catch(Exception e){
+		logger.error("Task deletion has failed", taskRepo.findById(id));
+		}
+		return new ResponseEntity<String>("Task deletion has failed",HttpStatus.BAD_REQUEST);
 				
 	}
 	
