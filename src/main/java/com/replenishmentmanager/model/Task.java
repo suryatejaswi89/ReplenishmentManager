@@ -9,17 +9,45 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection="tasks")
 public class Task {
 	
+	//cleanup make vars private 
+	
 	@Id
 	public String taskID;
+	/**
+	 * @return the weightage
+	 */
+	public double getWeightage() {
+		return weightage;
+	}
+	/**
+	 * @param weightage the weightage to set
+	 */
+	public void setWeightage(double weightage) {
+		this.weightage = weightage;
+	}
+	/**
+	 * @param dateCompleted the dateCompleted to set
+	 */
+	public void setDateCompleted(Date dateCompleted) {
+		this.dateCompleted = dateCompleted;
+	}
+	/**
+	 * @param inProgress the inProgress to set
+	 */
+	public void setInProgress(Date inProgress) {
+		this.inProgress = inProgress;
+	}
 	public String description;
 	public String taskOwnerID;
 	public String assigneeID;
 	public Date dateCreated;
 	public String status;
+	public int priority;
 	/*
 	  no:of days estimated to complete the task
 	 */
 	public int estimate;
+	public double weightage;
 	public Date dateCompleted;
 	public Date inProgress;
 	
@@ -34,15 +62,29 @@ public class Task {
 	 * @param estimate
 	 */
 	public Task(String taskID, String description, String taskOwnerID, String assigneeID, Date dateCreated,
-			String status, int estimate) {
+			String status,int priority, int estimate, double weightage) {
 		super();
 		this.taskID = taskID;
 		this.description = description;
 		this.taskOwnerID = taskOwnerID;
 		this.assigneeID = assigneeID;
 		this.dateCreated = dateCreated;
-		this.status = "created";
+		this.status = status;
+		this.priority = priority;
 		this.estimate = estimate;
+		this.weightage = weightage;
+	}
+	/**
+	 * @return the priority
+	 */
+	public int getPriority() {
+		return priority;
+	}
+	/**
+	 * @param priority the priority to set
+	 */
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 	/**
 	 * 

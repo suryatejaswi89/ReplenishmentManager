@@ -1,8 +1,11 @@
 package com.replenishmentmanager.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +39,8 @@ public class TaskController {
 	@RequestMapping(value = "/task", method = RequestMethod.POST)
 	@ResponseBody
 	public Task createTask(@RequestBody Task task) {
-		String description = task.getDescription();
-		String taskOwner = task.getTaskOwnerID();
-		String assignee = task.getAssigneeID();
-		Date dateCreated = task.getDateCreated();
-		String status = task.getStatus();
-		int estimate = task.getEstimate();
-		return taskService.createTask(description, taskOwner, assignee,dateCreated,status,estimate);
+		task.setWeightage(task.getPriority()*1000/task.getEstimate());
+		return taskService.saveTask(task);
 	}
 	
 	@RequestMapping(value="/{status}/", method = RequestMethod.GET)
@@ -50,6 +48,19 @@ public class TaskController {
 	public List<Task> getTasksbystatus(@PathVariable(value = "status") String status){
 		List<Task> tasks = taskRepo.findAllBystatus(status);
 		return tasks;
+	}
+	
+	@RequestMapping(value = "/pendingtasks/", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Task> pendingTasks(){
+		List<Task> tasks = taskRepo.findAllBystatus("pending");
+		List<Task> sortedTasks = null;
+		sortedTasks = tasks.stream()
+				.sorted(Comparator.comparingDouble(Task::getWeightage).reversed())
+				.collect(Collectors.toList());
+		
+		return sortedTasks;
+		
 	}
 	
 	@RequestMapping(value="/tasks/{_id}/", method = RequestMethod.GET)
@@ -92,10 +103,15 @@ public class TaskController {
 	@ResponseBody
 	public Task updateStatus(@PathVariable(value = "id") String id, @PathVariable(value = "status") String status) {
 		Task task = null;
+		Date date = new Date();
 		Optional<Task> taskWrapper = taskRepo.findById(id);
 		if(taskWrapper.isPresent()){
 			task = taskWrapper.get();
 			task.setStatus(status);
+			if(status.equalsIgnoreCase("started"))
+				task.setInProgress(date);
+			else if(status.equalsIgnoreCase("completed"))
+				task.setDateCompleted(date);
 			taskRepo.save(task);
 		}else {
 			//log error that task is null
@@ -117,11 +133,4 @@ public class TaskController {
 				
 	}
 	
-
-	
-	
-	
-	
-	
-
 }
