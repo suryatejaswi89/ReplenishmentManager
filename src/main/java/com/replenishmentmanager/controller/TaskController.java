@@ -139,12 +139,20 @@ public class TaskController {
 	
 	@RequestMapping(value =  "/createdByUser/{name}/", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Task> getAllTasksbyUser(@PathVariable(value = "name") String name){
-		 
+	public ResponseEntity<List<Task>> getAllTasksbyUser(@PathVariable(value = "name") String name){
+		List<Task> tasks = null;
+		try{
 		User user = userRepo.findByfName(name);
 		String id = user.getUserId();
-		List<Task> tasks = taskRepo.findBytaskOwnerID(id);
-		return tasks;
+		tasks = taskRepo.findBytaskOwnerID(id);
+		logger.info("All tasks created by user with given id have been listed", id,tasks);
+		logger.debug("All tasks have been listed",id, tasks.toString());
+		return new ResponseEntity<List<Task>>(tasks,HttpStatus.OK);
+		}
+		catch(Exception e){
+			logger.error("Listing tasks by ownerId have failed",e.getMessage());
+		}
+		return new ResponseEntity<List<Task>>(tasks,HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(value =  "/assignedToUser/{name}/", method = RequestMethod.GET)
