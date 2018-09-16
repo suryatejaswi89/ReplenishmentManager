@@ -2,6 +2,7 @@ package com.replenishmentmanager.controller;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.replenishmentmanager.commons.StatusEnum;
 import com.replenishmentmanager.model.Task;
 import com.replenishmentmanager.model.TaskRepository;
 import com.replenishmentmanager.model.User;
@@ -37,6 +39,7 @@ public class TaskController {
 	@RequestMapping(value = "/task", method = RequestMethod.POST)
 	@ResponseBody
 	public Task createTask(@RequestBody Task task) {
+		task.setStatus(StatusEnum.CREATED.toString());
 		task.setWeightage(task.getPriority()*1000/task.getEstimate());
 		return taskService.saveTask(task);
 	}
@@ -51,9 +54,12 @@ public class TaskController {
 	@RequestMapping(value = "/pendingtasks/", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Task> pendingTasks(){
-		List<Task> tasks = taskRepo.findAllBystatus("pending");
-		List<Task> sortedTasks = null;
-		sortedTasks = tasks.stream()
+		
+		List<Task> pendingTasks = new ArrayList<Task>();
+		pendingTasks.addAll(taskRepo.findAllBystatus(StatusEnum.CREATED.toString()));
+		pendingTasks.addAll(taskRepo.findAllBystatus(StatusEnum.STARTED.toString()));
+	
+		List<Task> sortedTasks = pendingTasks.stream()
 				.sorted(Comparator.comparingDouble(Task::getWeightage).reversed())
 				.collect(Collectors.toList());
 		
@@ -61,9 +67,9 @@ public class TaskController {
 		
 	}
 	
-	@RequestMapping(value="/tasks/{_id}/", method = RequestMethod.GET)
+	@RequestMapping(value="/tasks/{id}/", method = RequestMethod.GET)
 	@ResponseBody
-	public Optional<Task> getTasksbyID(@PathVariable(value = "_id") String id){
+	public Optional<Task> getTasksbyID(@PathVariable(value = "id") String id){
 		Optional<Task> task = taskRepo.findById(id);
 		return task;
 	}
@@ -104,13 +110,13 @@ public class TaskController {
 		Optional<Task> taskWrapper = taskRepo.findById(id);
 		if (taskWrapper.isPresent()) {
 			task = taskWrapper.get();
-			task.setStatus(status);
-			if (status.equalsIgnoreCase("started")) {
+			task.setStatus(status.toUpperCase());
+			if (status.equalsIgnoreCase(StatusEnum.STARTED.toString())) {
 				LocalDate date = LocalDate.now();
 				task.setDateStarted(date);
 				Period period = Period.between(task.getDateCreated(), date);
 				task.setTimeinCreatedstatus(period.getDays());
-			} else if (status.equalsIgnoreCase("completed")) {
+			} else if (status.equalsIgnoreCase(StatusEnum.COMPLETED.toString())) {
 				LocalDate date = LocalDate.now();
 				task.setDateCompleted(date);
 				Period period = Period.between(task.getDateStarted(), date);
@@ -123,7 +129,7 @@ public class TaskController {
 					System.out.println(task.getDateCreated().toString());
 					Task nextRecurringTask = (Task) task.clone();
 					nextRecurringTask.setDateCreated(newStartDate);
-					nextRecurringTask.setStatus("created");
+					nextRecurringTask.setStatus(StatusEnum.CREATED.toString());
 					nextRecurringTask.setTaskID(null); // mongo will create and assign new id 
 					taskRepo.save(nextRecurringTask);
 				}
