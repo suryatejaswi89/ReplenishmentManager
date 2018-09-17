@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.replenishmentmanager.model.Task;
 import com.replenishmentmanager.model.TaskRepository;
-import com.replenishmentmanager.model.User;
-import com.replenishmentmanager.model.UserRepository;
 import com.replenishmentmanager.service.TaskService;
 
 @Controller
@@ -28,9 +26,6 @@ public class TaskController {
 	
 	@Autowired
 	private TaskService taskService;
-	
-	@Autowired
-	private UserRepository userRepo;
 	
 	final static Logger logger = LogManager.getLogger();
 	
@@ -80,20 +75,19 @@ public class TaskController {
 		return new ResponseEntity<List<Task>>(tasks, HttpStatus.BAD_REQUEST); 
 	}
 	
-	@RequestMapping(value="/tasks/{id}/", method = RequestMethod.GET)
+	@RequestMapping(value = "/tasks/{id}/", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<Optional<Task>> getTasksbyID(@PathVariable(value = "id") String id){
+	public ResponseEntity<Optional<Task>> getTasksbyID(@PathVariable(value = "id") String id) {
 		Optional<Task> task = null;
-		try{
-		task = taskService.getTaskbyID(id);
-		logger.info("Task with given id has been found", task);
-		logger.debug("Task with given id has been found",task.toString());
-		return new ResponseEntity<Optional<Task>>(task,HttpStatus.OK);
-	}
-	catch(Exception e){
-		logger.error("Task fetching by Id has failed", e.getMessage());
-	}
-		return new ResponseEntity<Optional<Task>>(task, HttpStatus.BAD_REQUEST);
+		try {
+			task = taskService.getTaskbyID(id);
+			logger.info("Task with given id has been found", task);
+			logger.debug("Task with given id has been found", task.toString());
+			return new ResponseEntity<Optional<Task>>(task, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error("Task fetching by Id has failed", e.getMessage());
+		}
+		return new ResponseEntity<Optional<Task>>(task, HttpStatus.SERVICE_UNAVAILABLE);
 	}
 	
 	

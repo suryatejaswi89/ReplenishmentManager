@@ -1,4 +1,4 @@
-package com.replenishmentmanager.replenishmentmanager;
+package com.replenishmentmanager;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
