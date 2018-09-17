@@ -36,7 +36,7 @@ public class TaskControllerTest {
 
 	@MockBean
 	private TaskRepository taskRepository;
-
+	
 	LocalDate createdDate = LocalDate.now();
 	Task mockTask = new Task("5b9e7f2e9e58662c28581e4f", "Place an order for bananas",
 			"5b9d2bd0173edc52dfedadec", "5b9d2be5173edc52dfedadee", createdDate, "created", 2, 1, 2.0);
@@ -120,6 +120,29 @@ public class TaskControllerTest {
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 		assertEquals(result.getResponse().getStatus(),503);
 		
+	}
+	
+	@Test
+	public void test_pendingTasks_success() throws Exception{
+		List<Task> mockTaskList = new ArrayList<Task>();
+		mockTaskList.add(mockTask);
+		Mockito.when(taskService.getPendingTasks()).thenReturn(mockTaskList);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/pendingtasks/")
+				.accept(MediaType.APPLICATION_JSON);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(result.getResponse().getStatus(),200);
+		
+	}
+	
+	@Test
+	public void test_pendingTasks_failure() throws Exception{
+		List<Task> mockTaskList = new ArrayList<Task>();
+		mockTaskList.add(mockTask);
+		Mockito.when(taskService.getPendingTasks()).thenThrow(new RuntimeException());
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/pendingtasks/")
+				.accept(MediaType.APPLICATION_JSON);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(result.getResponse().getStatus(),503);
 	}
 	
 }
