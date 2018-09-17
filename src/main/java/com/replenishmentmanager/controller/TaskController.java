@@ -105,7 +105,7 @@ public class TaskController {
 		catch(Exception e){
 			logger.error("Listing tasks has failed due to an error",e.getMessage());
 		}
-		return new ResponseEntity<List<Task>>(tasks,HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<List<Task>>(tasks,HttpStatus.SERVICE_UNAVAILABLE);
 		
 	}
 	
