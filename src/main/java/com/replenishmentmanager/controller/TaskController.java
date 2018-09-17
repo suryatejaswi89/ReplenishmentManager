@@ -38,7 +38,7 @@ public class TaskController {
 	 * @return ResponseEntity which returns the task created with a http status
 	 */
 
-	@RequestMapping(value = "/task", method = RequestMethod.POST)
+	@RequestMapping(value = "/createTask", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Task> createTask(@RequestBody Task task) {
 		try {
@@ -57,7 +57,7 @@ public class TaskController {
 	 * status message based on whether the request was successful /not
 	 * 
 	 * @param status
-	 *            A string with which the tasks are retreived from the db
+	 *            A string with which the tasks are retrieved from the db
 	 * @return returns a list of tasks based on the input status along with a
 	 *         http status message
 	 */
@@ -243,8 +243,7 @@ public class TaskController {
 	 * is deleted or not. The given input string is used to fetch the task and
 	 * delete it from the db.
 	 * 
-	 * @param id
-	 *            String which is used to identify the task in the database.
+	 * @param id String which is used to identify the task in the database.
 	 * @return new ResponseEntity with string message and a http status message
 	 */
 	@RequestMapping(value = "/deletetask/{id}/", method = RequestMethod.DELETE)

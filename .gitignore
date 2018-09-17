@@ -6,3 +6,5 @@ target/
 logs/
 debug*
 info*
+docs/
+src/main/resources/static/
