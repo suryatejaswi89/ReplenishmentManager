@@ -152,7 +152,7 @@ public class TaskController {
 		} catch (Exception e) {
 			logger.error("Update status failed with error: {}", e.getMessage());
 		}
-		return new ResponseEntity<Task>(task, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Task>(task, HttpStatus.SERVICE_UNAVAILABLE);
 	}
 	
 	@RequestMapping(value = "/deletetask/{id}/" , method = RequestMethod.DELETE)

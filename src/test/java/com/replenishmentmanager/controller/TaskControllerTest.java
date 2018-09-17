@@ -81,4 +81,26 @@ public class TaskControllerTest {
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 		assertEquals(result.getResponse().getStatus(),503);
 	}
+	
+	@Test
+	public void test_updateStatus_success() throws Exception{
+		
+		Mockito.when(taskService.updateStatus(Mockito.anyString(), Mockito.anyString())).thenReturn(mockTask);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/updateStatus/5b9e7f2e9e58662c28581e4f/started/")
+				.accept(MediaType.APPLICATION_JSON);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(result.getResponse().getStatus(),200);
+		
+	}
+	
+	@Test
+	public void test_updateStatus_failure() throws Exception{
+		Mockito.when(taskService.updateStatus(Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException());
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/updateStatus/5b9e7f2e9e58662c28581e4f/started/")
+				.accept(MediaType.APPLICATION_JSON);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(result.getResponse().getStatus(),503);
+	}
+	
+	
 }
