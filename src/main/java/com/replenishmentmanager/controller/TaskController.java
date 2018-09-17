@@ -155,26 +155,18 @@ public class TaskController {
 		return new ResponseEntity<Task>(task, HttpStatus.SERVICE_UNAVAILABLE);
 	}
 	
-	@RequestMapping(value = "/deletetask/{id}/" , method = RequestMethod.DELETE)
+	@RequestMapping(value = "/deletetask/{id}/", method = RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseEntity<String> deleteTask(@PathVariable(value="id") String id){
-		
-		try{
-		if(taskRepo.existsById(id)){
-		taskRepo.deleteById(id);
-		logger.info("Task found in the repo", id);
-		logger.debug("Task with the given id has been deleted", id);
-		return new ResponseEntity<String>("Task deleted successfully",HttpStatus.OK);
+	public ResponseEntity<String> deleteTask(@PathVariable(value = "id") String id) {
+
+		try {
+			String str = taskService.deleteTask(id);
+			logger.info("Task found in the repo", id);
+			return new ResponseEntity<String>(str, HttpStatus.OK);
+		} catch (Exception e) {	
+			logger.error("Task deletion has failed", taskRepo.findById(id));
 		}
-		else{
-		return new ResponseEntity<String>("task not found",HttpStatus.OK);
-		}
-		}
-		catch(Exception e){
-		logger.error("Task deletion has failed", taskRepo.findById(id));
-		}
-		return new ResponseEntity<String>("Task deletion has failed",HttpStatus.BAD_REQUEST);
-				
+		return new ResponseEntity<String>("Task deletion has failed", HttpStatus.SERVICE_UNAVAILABLE);
 	}
 	
 }

@@ -139,6 +139,12 @@ public class TaskService {
 		}
 	}
 	
-	
-	
+	public String deleteTask(String id) throws Exception {
+		if (taskRepo.existsById(id)) {
+			taskRepo.deleteById(id);
+			return "Succesfully deleted";
+		} else {
+			throw new Exception("Task doesn't exists");
+		}
+	}
 }

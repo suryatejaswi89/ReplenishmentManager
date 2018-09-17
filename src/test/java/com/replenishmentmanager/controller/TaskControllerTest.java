@@ -102,5 +102,24 @@ public class TaskControllerTest {
 		assertEquals(result.getResponse().getStatus(),503);
 	}
 	
+	@Test
+	public void test_deleteTask_success() throws Exception{
+		String response = "succesfully deleted";
+		Mockito.when(taskService.deleteTask(Mockito.anyString())).thenReturn(response);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/deletetask/5b9e7f2e9e58662c28581e4f/")
+				.accept(MediaType.ALL);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(result.getResponse().getStatus(),200);
+		
+	}
+	@Test
+	public void test_deleteTask_failure() throws Exception{
+		Mockito.when(taskService.deleteTask(Mockito.anyString())).thenThrow(new RuntimeException());
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/deletetask/5b9e7f2e9e58662c28581e4f/")
+				.accept(MediaType.ALL);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(result.getResponse().getStatus(),503);
+		
+	}
 	
 }
