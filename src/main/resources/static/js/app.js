@@ -117,7 +117,7 @@ $(document).ready(function() {
                 //iterate and append tasks to list
                 response.forEach(task => {
                     $("#task_list ul").append('<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                    '<a href="" id="task_details_btn" class="badge badge-light" data-toggle="modal" data-target="#task_details_modal" style="text-decoration: underline;">'+task.description+'</a>'+
+                    '<a href="" data-id='+task.taskID +'  id="task_details_btn" class="badge badge-light" data-toggle="modal" data-target="#task_details_modal" style="text-decoration: underline;">'+task.description+'</a>'+
                     '<span class="badge badge-primary badge-pill badge-info">'+task.status+'</span>'+
                     '<span class="badge badge-primary badge-pill badge-info">Weightage: '+task.weightage+'</span>'+
                     '<a href="" class="badge badge-light" data-id='+task.taskID +' id="update_status_btn" data-toggle="modal" data-target="#update_status_modal" style="text-decoration: underline;">Update Status</a>'+
@@ -127,12 +127,12 @@ $(document).ready(function() {
         }
         getPendingTasks();
 
-        function getTaskDetails(taskid) {
+        function getTaskDetails(taskId) {
 
             var settings = {
                 "async": true,
                 "crossDomain": true,
-                "url": "http://localhost:8080/tasks/5b9e7f2e9e58662c28581e4f/",
+                "url": "http://localhost:8080/tasks/"+taskId+"/",
                 "method": "GET",
                 "headers": {
                     "Cache-Control": "no-cache"
