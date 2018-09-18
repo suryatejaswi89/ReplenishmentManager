@@ -2,7 +2,7 @@
 
 ### [Architecture and Design documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/Architecture-and-Design)
 
-### [API documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/API-documentation-for-Replenishment-Manager) 
+### [API documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/API-Docs) 
 
 ### **Work environment set up :**
 
