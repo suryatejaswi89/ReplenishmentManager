@@ -6,7 +6,6 @@ $(document).ready(function() {
         $("#update_status_modal #ut_task_id").val(currentTaskid);
       }
       
-    //onload get available tasks and list 
     function getTasks(){
         var settings = {
             "async": true,
@@ -30,7 +29,7 @@ $(document).ready(function() {
             });
           });     
     }
-      getTasks();
+     // getTasks();
       $("#create_task_submit_btn").click(function(){
             var task = {};
             task.description = $("#ct_description").val();
@@ -100,6 +99,32 @@ $(document).ready(function() {
     $("#update_status_submit_btn").click(function(){
         updateStatus();
     });
-		
+    
+    
+        //onload get all pending tasks and display in priority order as per the ranking algorithm
+        function getPendingTasks(){
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://localhost:8080/pendingtasks/",
+                "method": "GET",
+                "headers": {
+                  "Cache-Control": "no-cache"
+                }
+              }
+              
+              $.ajax(settings).done(function (response) {
+                //iterate and append tasks to list
+                response.forEach(task => {
+                    $("#task_list ul").append('<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                    '<span>'+task.description+'</span>'+
+                    '<span class="badge badge-primary badge-pill">'+task.status+'</span>'+
+                    '<span class="badge badge-primary badge-pill badge-info">Weightage: '+task.weightage+'</span>'+
+                    '<button class="badge badge-secondary badge-pill" data-id='+task.taskID +' id="update_status_btn" data-toggle="modal" data-target="#update_status_modal">Update Status</button>'+
+                  '</li>');
+                });
+              });     
+        }
+        getPendingTasks();
 });
   
