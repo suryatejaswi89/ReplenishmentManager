@@ -4,6 +4,11 @@
 
 ### [API documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/API-Docs) 
 
+### [UI documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/UI-Design-and-Experience)
+
+### [Future Roadmap](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/Future-Road-map)
+
+
 ### **Work environment set up :**
 
 * Install mongodb and make sure it is running on the port 27017
