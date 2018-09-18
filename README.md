@@ -27,6 +27,8 @@ mvn spring-boot:run
 ```
 * Wait for console to show "Started ReplenishmentmanagerApplication" to start using the API.
 
+* Visit [Replenishment Manager App](http://localhost:8080/) to start using the app, for instruction on how to use, please refer [UI documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/UI-Design-and-Experience)
+
 * Refer [API docs](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/API-documentation-for-Replenishment-Manager) to test scenarios of interest.
 
 * Every method is documented to allow Java docs generation. Docs can be generated with below command. Create "docs" directory before running the command.
