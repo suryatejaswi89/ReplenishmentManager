@@ -37,11 +37,11 @@ command: javadoc -d docs/ -sourcepath src/main/java/ -subpackages com.replenishm
 ## Assumptions and Design choices:
 
 * Any task can have any status from  the following
-	 Created
-	 Started
-	 completed 
-* The status of the task can only be changed from created → started→ completed.
-* If "isRecurring" condition for any task is true, the next recurring task is created only when its status is updated as “COMPLETED”
+    * Created
+    * Started
+    * completed 
+* The status of the task can only be changed from **created → started→ completed**.
+* If "isRecurring" condition for any task is true, the next recurring task is created only when current task's status is updated as “COMPLETED”
 * Pending tasks include both created and started tasks which have not been completed.
 * When ever the task status is changed, the timestamp is captured and stored to track time spent in each status.
 * A task can be created by individual and added to his personalised tasks by keeping the taskOnwerID and assigneeID as same.
