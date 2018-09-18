@@ -40,3 +40,4 @@ command: javadoc -d docs/ -sourcepath src/main/java/ -subpackages com.replenishm
 * Pending tasks include both created and started tasks which have not been completed.
 * When ever the task status is changed, the timestamp is captured and stored to track time spent in each status.
 * A task can be created by individual and added to his personalised tasks by keeping the taskOnwerID and assigneeID as same.
+* End date for the recurringTask has not been considered which means the task will be created repeatedly based on the frequency for ever.
