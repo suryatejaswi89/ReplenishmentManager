@@ -1,7 +1,10 @@
 # ReplenishmentManager
 
-## [Architecture and Design documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/Architecture-and-Design)
-### Work environment set up : 
+### [Architecture and Design documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/Architecture-and-Design)
+
+### [API documentation](https://github.com/suryatejaswi89/ReplenishmentManager/wiki/API-documentation-for-Replenishment-Manager) 
+
+### **Work environment set up :**
 
 * Install mongodb and make sure it is running on the port 27017
 * Clone this project.
