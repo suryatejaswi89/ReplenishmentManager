@@ -37,9 +37,9 @@ $(document).ready(function() {
             task.assigneeID = $("#ct_assignee_ID").val();
             task.dateCreated = $("#ct_date_created").val();
             task.priority = $("#ct_priority").val();
-            task.isRecurring = $("#ct_recurring").prop('checked');
+            task.recurringTask = $("#ct_recurring").prop('checked');
             task.estimate = $("#ct_estimate").val();
-            if(task.isRecurring){
+            if(task.recurringTask){
                 task.frequency = $("#ct_frequency").val();
             }
             console.log(task);
@@ -117,10 +117,10 @@ $(document).ready(function() {
                 //iterate and append tasks to list
                 response.forEach(task => {
                     $("#task_list ul").append('<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                    '<button id="task_details_btn" class="badge badge-info" data-toggle="modal" data-target="#task_details_modal">'+task.description+'</button>'+
-                    '<span class="badge badge-primary badge-pill">'+task.status+'</span>'+
+                    '<a href="" id="task_details_btn" class="badge badge-light" data-toggle="modal" data-target="#task_details_modal" style="text-decoration: underline;">'+task.description+'</a>'+
+                    '<span class="badge badge-primary badge-pill badge-info">'+task.status+'</span>'+
                     '<span class="badge badge-primary badge-pill badge-info">Weightage: '+task.weightage+'</span>'+
-                    '<button class="badge badge-secondary badge-pill" data-id='+task.taskID +' id="update_status_btn" data-toggle="modal" data-target="#update_status_modal">Update Status</button>'+
+                    '<a href="" class="badge badge-light" data-id='+task.taskID +' id="update_status_btn" data-toggle="modal" data-target="#update_status_modal" style="text-decoration: underline;">Update Status</a>'+
                   '</li>');
                 });
               });     
@@ -147,9 +147,9 @@ $(document).ready(function() {
                  $("#details_assignee_ID").text(task.assigneeID);
                  $("#details_date_created").text(task.dateCreated);
                  $("#details_priority").text(task.priority);
-                 $("#details_recurring").text(task.isRecurring);
+                 $("#details_recurring").text(task.recurringTask);
                  $("#details_estimate").text(task.estimate);
-                    if(task.isRecurring){
+                    if(task.recurringTask){
                         $("#details_frequency").text(task.frequency || '');
                     }
                  $("#details_status").text(task.status);
