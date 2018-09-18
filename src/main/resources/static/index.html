@@ -26,23 +26,8 @@
   </nav>
 
   <!-- Page Content -->
-  <div class="container">
+  <div class="container" id="task_list">
     <ul class="list-group">
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Cras justo odio
-        <span class="badge badge-primary badge-pill">Created</span>
-        <button class="badge badge-secondary" id="update_status_btn" data-toggle="modal" data-target="#update_status_modal">Update Status</button>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Dapibus ac facilisis in
-        <span class="badge badge-primary badge-pill">started</span>
-        <button class="badge badge-secondary" id="update_status_btn" data-toggle="modal" data-target="#update_status_modal">Update Status</button>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        Morbi leo risus
-        <span class="badge badge-primary badge-pill">completed</span>
-        <button class="badge badge-secondary" id="update_status_btn" data-toggle="modal" data-target="#update_status_modal">Update Status</button>
-      </li>
     </ul>
   </div>
 
@@ -117,8 +102,8 @@
             <label for="frequency">Frequency</label>
             <input id="ct_frequency" type="text" class="form-control" placeholder="Enter frequency">
           </div> 
-          <button id="create_task_submit_btn" type="submit" class="btn btn-primary float-right">Submit</button>
         </form>
+        <button id="create_task_submit_btn" type="submit" class="btn btn-primary float-right">Submit</button>
       </div>
     </div>
   </div>
