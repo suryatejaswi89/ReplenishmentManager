@@ -131,6 +131,95 @@
     </div>
   </div>
 </div>
+
+<!-- Task details Modal -->
+<div class="modal fade" id="task_details_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Task Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Field Name</th>
+                    <th scope="col">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Task ID</td>
+                    <td><span id="details_task_ID"></span></td>
+                  </tr>
+                  <tr>
+                    <td>Task Description</td>
+                    <td><span id="details_description"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Task Owner ID</td>
+                      <td><span id="details_taskOwner_ID"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Assignee ID</td>
+                      <td><span id="details_assignee_ID"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Date Created</td>
+                      <td><span id="details_date_created"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Priority</td>
+                      <td><span id="details_priority"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Is Recurring</td>
+                      <td><span id="details_recurring"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Estrimate</td>
+                      <td><span id="details_estimate"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Frequency</td>
+                      <td><span id="details_frequency"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Status</td>
+                      <td><span id="details_status"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Weightage</td>
+                      <td><span id="details_weightage"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Date Started</td>
+                      <td><span id="details_dateStarted"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Date Completed</td>
+                      <td><span id="details_dateCompleted"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Time in Created Status</td>
+                      <td><span id="details_timeinCreatedstatus"></span></td>
+                  </tr>
+                  <tr>
+                      <td>Time in Started Status</td>
+                      <td><span id="details_timeInDateStartedstatus"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>

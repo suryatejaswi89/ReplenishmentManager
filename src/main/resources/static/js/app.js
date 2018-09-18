@@ -22,7 +22,7 @@ $(document).ready(function() {
             //iterate and append tasks to list
             response.forEach(task => {
                 $("#task_list ul").append('<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                '<span>'+task.description+'</span>'+
+                '<button id="task_details_btn" class="badge badge-info" data-toggle="modal" data-target="#task_details_modal">'+task.description+'</button>'+
                 '<span class="badge badge-primary badge-pill">'+task.status+'</span>'+
                 '<button class="badge badge-secondary" data-id='+task.taskID +' id="update_status_btn" data-toggle="modal" data-target="#update_status_modal">Update Status</button>'+
               '</li>');
@@ -117,7 +117,7 @@ $(document).ready(function() {
                 //iterate and append tasks to list
                 response.forEach(task => {
                     $("#task_list ul").append('<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                    '<span>'+task.description+'</span>'+
+                    '<button id="task_details_btn" class="badge badge-info" data-toggle="modal" data-target="#task_details_modal">'+task.description+'</button>'+
                     '<span class="badge badge-primary badge-pill">'+task.status+'</span>'+
                     '<span class="badge badge-primary badge-pill badge-info">Weightage: '+task.weightage+'</span>'+
                     '<button class="badge badge-secondary badge-pill" data-id='+task.taskID +' id="update_status_btn" data-toggle="modal" data-target="#update_status_modal">Update Status</button>'+
@@ -126,5 +126,49 @@ $(document).ready(function() {
               });     
         }
         getPendingTasks();
+
+        function getTaskDetails(taskid) {
+
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "http://localhost:8080/tasks/5b9e7f2e9e58662c28581e4f/",
+                "method": "GET",
+                "headers": {
+                    "Cache-Control": "no-cache"
+                }
+            }
+
+            $.ajax(settings).done(function (task) {
+                console.log(task);
+                 $("#details_task_ID").text(task.taskID);
+                 $("#details_description").text(task.description);
+                 $("#details_taskOwner_ID").text(task.taskOwnerID);
+                 $("#details_assignee_ID").text(task.assigneeID);
+                 $("#details_date_created").text(task.dateCreated);
+                 $("#details_priority").text(task.priority);
+                 $("#details_recurring").text(task.isRecurring);
+                 $("#details_estimate").text(task.estimate);
+                    if(task.isRecurring){
+                        $("#details_frequency").text(task.frequency || '');
+                    }
+                 $("#details_status").text(task.status);
+                 $("#details_weightage").text(task.weightage);
+                 $("#details_dateCompleted").text(task.dateCompleted);
+                 $("#details_dateStarted").text(task.dateStarted);
+                 $("#details_timeinCreatedstatus").text(task.timeinCreatedstatus);
+                 $("#details_timeInDateStartedstatus").text(task.timeInDateStartedstatus);
+            });
+        }
+
+
+        $('body').on('click', '#task_details_btn', function (e) {
+            // convert target to jquery object
+            var $target = $(e.target);
+            // modal targeted by the button
+            var modalSelector = $target.data('target');
+            var taskId = $target.data("id");
+            getTaskDetails(taskId);
+        });
 });
   
